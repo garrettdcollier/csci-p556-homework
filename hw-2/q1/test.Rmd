@@ -1,0 +1,38 @@
+---
+title: "Softmax Test"
+author: "Garrett Collier"
+date: "2025-03-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(glmnet)
+```
+
+```{r}
+X <- as.matrix(iris[, c("Petal.Length", "Petal.Width")])
+y <- iris$Species
+```
+
+```{r}
+y_num <- as.numeric(y)
+fit <- glmnet(X, y_num, family = "multinomial", lambda = 0.1)
+```
+
+```{r}
+new_data <- matrix(c(5, 2), nrow = 1)
+
+# Predict class
+pred_class <- predict(fit, newx = new_data, type = "class")
+print(pred_class)
+
+```
+
+```{r}
+# Predict probabilities
+pred_prob <- predict(fit, newx = new_data, type = "response")
+print(pred_prob)
+```
+
